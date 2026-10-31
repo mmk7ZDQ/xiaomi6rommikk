@@ -1,0 +1,26 @@
+# 镜像太大（GB 级），不进仓库；脚本会自己下载
+*.img
+*.img.xz
+*.img.zsync
+*.new.dat
+*.new.dat.br
+*.patch.dat
+
+# 构建产物
+work/
+out/
+*.zip
+
+# 备份（含 IMEI/NV，永远不要提交）
+backups/
+*.img.sha256
+
+# 密钥：私钥永不提交
+*.pk8
+*.pem
+!docs/**/*.pem
+
+# 杂物
+.DS_Store
+*.log
+__pycache__/

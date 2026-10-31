@@ -1,0 +1,20 @@
+assert(getprop("ro.product.device") == "sagit" || getprop("ro.build.product") == "sagit" || abort("E3004: This package is for device: sagit; this device is " + getprop("ro.product.device") + "."););
+assert(xiaomi.verify_trustzone("TZ.BF.4.0.6-00178") == "1" || abort("Error: This package requires MIUI firmware version 9.5.16 or newer. Please upgrade firmware and retry!"););
+ui_print("=========================================");
+ui_print("  RestlessOS 16.0.0  for Xiaomi MI 6");
+ui_print("  system : RestlessOS GSI (Android 16)");
+ui_print("  vendor : LineageOS 22.2 (Android 15)");
+ui_print("=========================================");
+ui_print("Patching system image unconditionally...");
+show_progress(0.850000, 0);
+block_image_update("/dev/block/bootdevice/by-name/system", package_extract_file("system.transfer.list"), "system.new.dat.br", "system.patch.dat") ||
+  abort("E1001: Failed to update system image.");
+ui_print("Patching vendor image unconditionally...");
+show_progress(0.100000, 0);
+block_image_update("/dev/block/bootdevice/by-name/cust", package_extract_file("vendor.transfer.list"), "vendor.new.dat.br", "vendor.patch.dat") ||
+  abort("E2001: Failed to update vendor image.");
+ui_print("Writing boot image...");
+package_extract_file("boot.img", "/dev/block/bootdevice/by-name/boot");
+show_progress(0.050000, 10);
+set_progress(1.000000);
+ui_print("Done. Wipe data / factory reset before first boot.");

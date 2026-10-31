@@ -1,0 +1,18 @@
+# /etc/udev/rules.d/51-android.rules
+#
+# 让普通用户能用 adb / fastboot 访问安卓设备。
+# 不做这一步，adb 会报: no permissions (missing udev rules? user is in the plugdev group)
+#
+# 安装:
+#   sudo cp 51-android.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload-rules && sudo udevadm trigger --subsystem-match=usb
+#   cat /etc/udev/rules.d/51-android.rules     # 确认真的写进去了（踩过坑）
+#
+# 说明:
+#   18d1 = Google  —— 设备在 Android/adb 模式下的 VID（很多厂商 ROM 也用这个）
+#   2717 = Xiaomi  —— 小米 fastboot 模式
+#   其他常见: 04e8 三星 / 18d1 谷歌 / 22b8 摩托 / 0bb4 HTC / 12d1 华为 /
+#             22d9 OPPO / 2a70 一加 / 05c6 高通(EDL) / 0fce 索尼
+
+SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="2717", MODE="0666", GROUP="plugdev"
